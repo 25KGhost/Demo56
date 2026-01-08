@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SEIF STORE | The Collection</title>
+    <style>
+        /* --- 01. THE SYSTEM (VARIABLES) --- */
+        :root {
+            --bg-void: #030303;        /* Absolute Black */
+            --bg-panel: #0f0f0f;       /* Elevated Surface */
+            --bg-card: #141414;        /* Product Card Bg */
+            
+            --text-primary: #F2F2F7;   /* Cold Ivory */
+            --text-secondary: #86868b; /* Apple Grey */
+            --text-muted: #424245;     /* Dark Grey */
+            
+            --accent: #D1D1D6;         /* Cold Silver */
+            --border: rgba(255, 255, 255, 0.08);
+            
+            --font-main: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Helvetica Neue", sans-serif;
+            --ease: cubic-bezier(0.16, 1, 0.3, 1); /* Apple 'Spring' feel */
+        }
+
+        /* --- 02. RESET & BASE --- */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            background-color: var(--bg-void);
+            color: var(--text-primary);
+            font-family: var(--font-main);
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        a { text-decoration: none; color: inherit; transition: color 0.3s ease; }
+        ul { list-style: none; }
+        img { width: 100%; display: block; object-fit: cover; }
+
+        /* --- 03. TYPOGRAPHY --- */
+        .display-text {
+            font-size: clamp(2rem, 5vw, 4rem);
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            line-height: 1.1;
+        }
+        
+        .label {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            color: var(--text-secondary);
+            font-weight: 600;
+        }
+
+        /* --- 04. NAVIGATION (THE COCKPIT) --- */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            padding: 20px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 100;
+            background: rgba(3, 3, 3, 0.85); /* Glass effect */
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .logo {
+            font-weight: 800;
+            font-size: 1.2rem;
+            letter-spacing: 0.05em;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 32px;
+        }
+
+        .nav-links a {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        .nav-links a:hover { color: var(--text-primary); }
+        
+        .nav-icons { display: flex; gap: 24px; font-size: 0.9rem; }
+
+        /* Mobile Menu Hiding */
+        @media (max-width: 768px) {
+            .nav-links { display: none; }
+            nav { padding: 20px; }
+        }
+
+        /* --- 05. HERO SECTION (THE PRESENCE) --- */
+        .hero {
+            height: 100vh;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            position: relative;
+            padding: 0 20px;
+            background: radial-gradient(circle at center, #1a1a1a 0%, #030303 100%);
+        }
+
+        /* Represents the "High Contrast Photography" */
+        .hero-bg {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-image: url('/assets/hoodie-33.webp');
+            background-size: cover;
+            background-position: center;
+            opacity: 0.4;
+            mix-blend-mode: luminosity; /* Forces Black & White */
+            z-index: 1;
+        }
+
+        .hero-content {
+            z-index: 2;
+            max-width: 800px;
+            animation: riseUp 1.5s var(--ease) forwards;
+        }
+
+        .hero h1 { margin-bottom: 24px; }
+        
+        .cta-button {
+            display: inline-block;
+            margin-top: 32px;
+            padding: 16px 48px;
+            border: 1px solid var(--text-primary);
+            background: transparent;
+            color: var(--text-primary);
+            font-size: 0.9rem;
+            font-weight: 600;
+            letter-spacing: 0.05em;
+            transition: all 0.4s var(--ease);
+        }
+
+        .cta-button:hover {
+            background: var(--text-primary);
+            color: var(--bg-void);
+        }
+
+        /* --- 06. THE TICKER (THE MACHINE) --- */
+        .ticker-wrap {
+            width: 100%;
+            overflow: hidden;
+            background: var(--bg-void);
+            padding: 24px 0;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .ticker {
+            display: inline-block;
+            white-space: nowrap;
+            animation: scroll 30s linear infinite;
+        }
+
+        .ticker-item {
+            display: inline-block;
+            padding: 0 2rem;
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
+        }
+
+        /* --- 07. PRODUCT GRID (THE EDIT) --- */
+        .section { padding: 120px 40px; }
+        
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            margin-bottom: 60px;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 20px;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 40px 20px;
+        }
+
+        .card {
+            background: transparent;
+            cursor: pointer;
+            group: hover;
+        }
+
+        .card-image-wrapper {
+            width: 100%;
+            height: 450px;
+            background: var(--bg-card);
+            overflow: hidden;
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        .card-image {
+            width: 100%;
+            height: 100%;
+            opacity: 0.9;
+            transition: transform 0.6s var(--ease), opacity 0.4s ease;
+        }
+
+        .card:hover .card-image {
+            transform: scale(1.03);
+            opacity: 1;
+        }
+
+        .card-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+        }
+
+        .product-name {
+            font-size: 1rem;
+            font-weight: 500;
+            margin-bottom: 4px;
+        }
+
+        .product-price {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        /* --- 08. THE MANIFESTO (AUTHORITY) --- */
+        .manifesto {
+            background: var(--bg-panel);
+            padding: 160px 40px;
+            text-align: center;
+        }
+
+        .manifesto-text {
+            font-size: clamp(1.5rem, 3vw, 2.5rem);
+            line-height: 1.4;
+            max-width: 900px;
+            margin: 0 auto;
+            color: var(--text-secondary);
+        }
+
+        .manifesto-text span {
+            color: var(--text-primary);
+        }
+
+        /* --- 09. FOOTER --- */
+        footer {
+            padding: 80px 40px;
+            border-top: 1px solid var(--border);
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            gap: 40px;
+        }
+
+        .footer-col h4 {
+            color: var(--text-primary);
+            margin-bottom: 24px;
+            font-size: 0.9rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+        }
+
+        .footer-col ul li {
+            margin-bottom: 12px;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            cursor: pointer;
+        }
+        
+        .footer-col ul li:hover { color: var(--accent); }
+
+        .copyright {
+            width: 100%;
+            margin-top: 80px;
+            padding-top: 20px;
+            border-top: 1px solid var(--border);
+            color: var(--text-muted);
+            font-size: 0.8rem;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        /* --- ANIMATIONS --- */
+        @keyframes scroll {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+        
+        @keyframes riseUp {
+            from { opacity: 0; transform: translateY(40px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @media (max-width: 768px) {
+            .section { padding: 80px 20px; }
+            .grid { grid-template-columns: 1fr; }
+            .card-image-wrapper { height: 400px; }
+            footer { flex-direction: column; }
+        }
+
+        .img-box {
+            width: 100%;
+            aspect-ratio: 3/4;
+            overflow: hidden;
+            background: #111;
+            margin-bottom: 20px;
+        }
+
+        .img-box img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.8s scale(1.05);
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <div class="logo">SEIF STORE</div>
+        <div class="nav-links">
+            <a href="#">Shop All</a>
+            <a href="#">Outerwear</a>
+            <a href="#">Essentials</a>
+            <a href="#">Archive</a>
+        </div>
+        <div class="nav-icons">
+            <a href="#">ALG / EN</a>
+            <a href="#">CART (0)</a>
+        </div>
+    </nav>
+
+    <section class="hero">
+        <div class="hero-bg"></div>
+        <div class="hero-content">
+            <div class="label" style="margin-bottom: 20px;">Est. Algeria — 202X</div>
+            <h1 class="display-text">SILENCE IS THE<br>LOUDEST SOUND.</h1>
+            <p style="color: var(--text-secondary); max-width: 400px; margin: 0 auto; line-height: 1.6;">
+                Engineered for those who do not ask for attention.
+                The new collection has arrived.
+            </p>
+            <a href="#" class="cta-button">ENTER STORE</a>
+        </div>
+    </section>
+
+    <div class="ticker-wrap">
+        <div class="ticker">
+            <span class="ticker-item">PRECISION ENGINEERING</span>
+            <span class="ticker-item">ALGIERS</span>
+            <span class="ticker-item">NO COMPROMISE</span>
+            <span class="ticker-item">2,000+ CLIENTS</span>
+            <span class="ticker-item">SEIF STORE</span>
+            <span class="ticker-item">PRECISION ENGINEERING</span>
+            <span class="ticker-item">ALGIERS</span>
+            <span class="ticker-item">NO COMPROMISE</span>
+            <span class="ticker-item">6,000+ CLIENTS</span>
+            <span class="ticker-item">SEIF STORE</span>
+        </div>
+    </div>
+
+    <section class="section">
+        <div class="section-header">
+            <div>
+                <div class="label">The Edit</div>
+                <h2 style="font-size: 2rem; margin-top: 10px;">LATEST ARRIVALS</h2>
+            </div>
+            <a href="#" style="font-size: 0.9rem; border-bottom: 1px solid var(--text-secondary); padding-bottom: 4px;">View All</a>
+        </div>
+
+        <div class="grid">
+            <div class="card">
+                <div class="img-box">
+                    <img src="assets/hoodie-03.jpg" alt="Seif Product">
+                </div>
+                <div class="card-info">
+                    <div>
+                        <div class="product-name">Structure Coat 01</div>
+                        <div class="label" style="font-size: 10px; margin-top: 4px;">Heavy Wool</div>
+                    </div>
+                    <div class="product-price">18,500 DZD</div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="img-box">
+                    <img src="assets/hoodie-02.jpg" alt="Seif Product">
+                </div>
+                <div class="card-info">
+                    <div>
+                        <div class="product-name">Merino Mock Neck</div>
+                        <div class="label" style="font-size: 10px; margin-top: 4px;">Essentials</div>
+                    </div>
+                    <div class="product-price">9,200 DZD</div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="img-box">
+                    <img src="assets/hoodie-01.jpg" alt="Seif Product">
+                </div>
+                <div class="card-info">
+                    <div>
+                        <div class="product-name">Pleated Trouser</div>
+                        <div class="label" style="font-size: 10px; margin-top: 4px;">Relaxed Fit</div>
+                    </div>
+                    <div class="product-price">11,000 DZD</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="manifesto">
+        <div class="label" style="margin-bottom: 32px;">The Philosophy</div>
+        <p class="manifesto-text">
+            HIGH QUALITY FOR BETTER EXPERIENCE
+        </p>
+    </section>
+
+    <footer>
+        <div class="footer-col" style="flex: 2;">
+            <div class="logo" style="margin-bottom: 20px;">SEIF STORE</div>
+            <p style="color: var(--text-secondary); max-width: 300px; font-size: 0.9rem;">
+                Defining the new aesthetic of Algerian luxury.
+                Quiet. Dominant.
+            </p>
+        </div>
+        
+        <div class="footer-col">
+            <h4>Shop</h4>
+            <ul>
+                <li>New Arrivals</li>
+                <li>Best Sellers</li>
+                <li>Accessories</li>
+            </ul>
+        </div>
+
+        <div class="footer-col">
+            <h4>Support</h4>
+            <ul>
+                <li>Shipping Policy</li>
+                <li>Returns</li>
+                <li>Size Guide</li>
+            </ul>
+        </div>
+
+        <div class="footer-col">
+            <h4>Social</h4>
+            <ul>
+                <li>Instagram</li>
+                <li>TikTok</li>
+            </ul>
+        </div>
+
+        <div class="copyright">
+            <span>© 2024 SEIF STORE. All rights reserved.</span>
+            <span>Algiers, DZ</span>
+        </div>
+    </footer>
+
+</body>
+</html>
