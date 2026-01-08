@@ -322,6 +322,128 @@
             object-fit: cover;
             transition: transform 0.8s scale(1.05);
         }
+
+        /* --- MOBILE OPTIMIZATION OVERRIDES --- */
+
+/* 1. Root & Global Fixes */
+html, body {
+    overflow-x: hidden; /* Strict prevention of side-scrolling */
+    width: 100%;
+    position: relative;
+}
+
+/* 2. Enhanced Navigation for Mobile */
+@media (max-width: 768px) {
+    nav {
+        padding: 15px 20px; /* Thinner nav on mobile for more screen real estate */
+        height: 60px;
+        display: flex;
+        align-items: center;
+    }
+
+    .logo {
+        font-size: 1rem; /* Slightly smaller logo to prevent crowding */
+    }
+
+    .nav-icons {
+        gap: 15px; /* Tighter gap for smaller screens */
+        font-size: 0.75rem;
+    }
+}
+
+/* 3. Hero Section Fluidity */
+@media (max-width: 480px) {
+    .hero {
+        padding: 0 24px;
+        height: 85vh; /* Prevents hero from feeling too long on small phones */
+    }
+
+    .hero h1.display-text {
+        font-size: 2.2rem; /* Better text scaling for narrow widths */
+        line-height: 1.2;
+    }
+
+    .cta-button {
+        width: 100%; /* Makes button easier to tap with thumb */
+        max-width: 280px;
+        padding: 18px 0;
+        text-align: center;
+    }
+}
+
+/* 4. Product Grid Refinement */
+@media (max-width: 768px) {
+    .section {
+        padding: 60px 20px; /* Reduced vertical padding */
+    }
+
+    .section-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+        margin-bottom: 40px;
+    }
+
+    .grid {
+        grid-template-columns: 1fr; /* Stack cards vertically */
+        gap: 30px;
+    }
+
+    .img-box {
+        aspect-ratio: 4/5; /* Better ratio for mobile viewing */
+    }
+
+    .product-name {
+        font-size: 1.1rem; /* Easier to read */
+    }
+}
+
+/* 5. Manifesto Section Text Scaling */
+@media (max-width: 768px) {
+    .manifesto {
+        padding: 100px 24px;
+    }
+
+    .manifesto-text {
+        font-size: 1.4rem;
+        line-height: 1.5;
+    }
+}
+
+/* 6. Footer Layout Fix */
+@media (max-width: 768px) {
+    footer {
+        padding: 60px 20px;
+        display: grid;
+        grid-template-columns: 1fr 1fr; /* Two columns for footer links */
+        gap: 30px;
+    }
+
+    .footer-col:first-child {
+        grid-column: span 2; /* Logo and description take full width */
+        margin-bottom: 20px;
+    }
+
+    .copyright {
+        flex-direction: column; /* Stack copyright info */
+        gap: 10px;
+        margin-top: 40px;
+        text-align: left;
+    }
+}
+
+/* 7. General Utility for Touch Devices */
+@media (hover: none) {
+    .card:hover .card-image {
+        transform: none; /* Disable hover zooms on touch screens to prevent "sticky" hover states */
+    }
+    
+    .cta-button:active {
+        background: var(--text-primary);
+        color: var(--bg-void);
+    }
+} 
+        
     </style>
 </head>
 <body>
